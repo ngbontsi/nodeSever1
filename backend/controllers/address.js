@@ -6,10 +6,10 @@ exports.createThing = (req, res, next) => {
   const url = req.protocol + '://' + req.get('host');
 
   const address = new Address({
-    streetName: req.body.address.streetname,
+    streetname: req.body.address.streetname,
     suburb: req.body.address.suburb,
     region: req.body.address.region,
-    poBox: req.body.address.pobox,
+    pobox: req.body.address.pobox,
     user_id: req.body.address.user_id
   });
 
