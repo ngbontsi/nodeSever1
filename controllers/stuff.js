@@ -2,13 +2,16 @@ const Thing = require('../models/thing');
 const fs = require('fs');
 
 exports.createThing = (req, res, next) => {
-  req.body.thing = JSON.parse(req.body.thing);
+    console.log("About to save thing");
+    console.log("Requested info: ", req.body);
+ // req.body.thing = JSON.parse(req.body.thing);
+    console.log("getting Thing info: ", req.body.thing);
   const url = req.protocol + '://' + req.get('host');
-
+    console.log("Printing url for image ", url);
   const thing = new Thing({
     title: req.body.thing.title,
     description: req.body.thing.description,
-    imageUrl: url + '/images/' + req.file.filename,
+    imageUrl: url + '/images/' + req.body.imageUrl,
     price: req.body.thing.price,
     userId: req.body.thing.userId
   });
