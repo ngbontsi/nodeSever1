@@ -15,13 +15,15 @@ exports.signup = (req, res, next) => {
       user.save().then(
         () => {
           res.status(201).json({
-            message: 'User added successfully!'
+            message: 'User added successfully!',
+              success: true
           });
         }
       ).catch(
         (error) => {
           res.status(500).json({
-            error: error
+            error: error,
+              success: false
           });
         }
       );
@@ -30,18 +32,21 @@ exports.signup = (req, res, next) => {
 };
 
 exports.login = (req, res, next) => {
+    console.log("entering Login method :", req.body)
   User.findOne({ email: req.body.email }).then(
     (user) => {
       if (!user) {
         return res.status(401).json({
-          error: new Error('User not found!')
+          error: new Error('User not found!'),
+            success: false
         });
       }
       bcrypt.compare(req.body.password, user.password).then(
         (valid) => {
           if (!valid) {
             return res.status(401).json({
-              error: new Error('Incorrect password!')
+              error: new Error('Incorrect password!'),
+                success: false
             });
           }
           const token = jwt.sign(
@@ -49,14 +54,16 @@ exports.login = (req, res, next) => {
             'RANDOM_TOKEN_SECRET',
             { expiresIn: '24h' });
           res.status(200).json({
-            userId: user._id,
-            token: token
+              user: user,
+            token: token,
+              success: true
           });
         }
       ).catch(
         (error) => {
           res.status(500).json({
-            error: error
+            error: error,
+              success: false
           });
         }
       );
@@ -64,7 +71,8 @@ exports.login = (req, res, next) => {
   ).catch(
     (error) => {
       res.status(500).json({
-        error: error
+        error: error,
+          success: false
       });
     }
   );
@@ -73,12 +81,14 @@ exports.login = (req, res, next) => {
 exports.getAllUsers = (req, res, next) => {
     User.find().then(
         (users) => {
-            res.status(200).json(users);
+            res.status(200).json({users,
+                success: true});
         }
     ).catch(
         (error) => {
             res.status(400).json({
-                error: error
+                error: error,
+                success: false
             });
         }
     );
@@ -90,12 +100,13 @@ exports.getUserById = (req, res, next) => {
         _id: req.params.id
     }).then(
         (user) => {
-            res.status(200).json(user);
+            res.status(200).json({user,success: true});
         }
     ).catch(
         (error) => {
             res.status(404).json({
-                error: error
+                error: error,
+                success: false
             });
         }
     );
@@ -105,7 +116,7 @@ exports.modifyUser = (req, res, next) => {
     let user = new User({ _id: req.params._id });
 
         req.body.user = JSON.parse(req.body.user);
-        thing = {
+    user = {
             firstname: req.body.firstname,
             email: req.body.email
         };
