@@ -83,3 +83,68 @@ exports.getAllUsers = (req, res, next) => {
         }
     );
 };
+
+
+exports.getUserById = (req, res, next) => {
+    User.findOne({
+        _id: req.params.id
+    }).then(
+        (user) => {
+            res.status(200).json(user);
+        }
+    ).catch(
+        (error) => {
+            res.status(404).json({
+                error: error
+            });
+        }
+    );
+};
+
+exports.modifyUser = (req, res, next) => {
+    let user = new User({ _id: req.params._id });
+
+        req.body.user = JSON.parse(req.body.user);
+        thing = {
+            firstname: req.body.firstname,
+            email: req.body.email
+        };
+
+    User.updateOne({_id: req.params.id}, user).then(
+        () => {
+            res.status(201).json({
+                message: 'Thing updated successfully!'
+            });
+        }
+    ).catch(
+        (error) => {
+            res.status(400).json({
+                error: error
+            });
+        }
+    );
+};
+
+exports.deleteUser = (req, res, next) => {
+    User.findOne({_id: req.params.id}).then(
+        (user) => {
+            const filename = user.imageUrl.split('/images/')[1];
+            fs.unlink('images/' + filename, () => {
+                User.deleteOne({_id: req.params.id}).then(
+                    () => {
+                        res.status(200).json({
+                            message: 'Deleted!'
+                        });
+                    }
+                ).catch(
+                    (error) => {
+                        res.status(400).json({
+                            error: error
+                        });
+                    }
+                );
+            });
+        }
+    );
+};
+
