@@ -3,9 +3,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const Thing = require('./models/thing');
 const stuffRoutes = require('./routes/stuff');
 const userRoutes = require('./routes/user');
+const userRoutes = require('./routes/category');
 
 const path = require('path');
 const app = express();
@@ -19,9 +19,10 @@ mongoose.connect('mongodb+srv://ngbontsi:Siviwe_01@cluster0.fzwnn.mongodb.net/re
     console.error(error);
   });
 app.use(bodyParser.json())
- app.use('/images', express.static(path.join(__dirname, 'images')));
+app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use('/api/stuff', stuffRoutes);
- app.use('/api/auth', userRoutes);
+app.use('/api/auth', userRoutes);
+app.use('/api/category', userRoutes);
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
