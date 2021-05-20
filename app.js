@@ -5,7 +5,8 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const stuffRoutes = require('./routes/stuff');
 const userRoutes = require('./routes/user');
-const userRoutes = require('./routes/category');
+const requestRoutes = require('./routes/request');
+const categoryRoutes = require('./routes/category');
 
 const path = require('path');
 const app = express();
@@ -22,7 +23,8 @@ app.use(bodyParser.json())
 app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use('/api/stuff', stuffRoutes);
 app.use('/api/auth', userRoutes);
-app.use('/api/category', userRoutes);
+app.use('/api/category', categoryRoutes);
+app.use('/api/request', requestRoutes);
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');

@@ -9,6 +9,8 @@ exports.signup = (req, res, next) => {
     (hash) => {
       const user = new User({
           firstname: req.body.firstname,
+          username: req.body.username,
+          userrole: req.body.userrole,
           email: req.body.email,
           password: hash
       });
@@ -113,12 +115,13 @@ exports.getUserById = (req, res, next) => {
 };
 
 exports.modifyUser = (req, res, next) => {
-    let user = new User({ _id: req.params._id });
 
-        req.body.user = JSON.parse(req.body.user);
-    user = {
-            firstname: req.body.firstname,
-            email: req.body.email
+       req.body.user = JSON.parse(req.body.user);
+      let user = {
+          firstname: req.body.firstname,
+          username: req.body.username,
+          userrole: req.body.userrole,
+          email: req.body.email
         };
 
     User.updateOne({_id: req.params.id}, user).then(
@@ -158,4 +161,3 @@ exports.deleteUser = (req, res, next) => {
         }
     );
 };
-

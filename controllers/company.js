@@ -1,7 +1,7 @@
 const Company = require('../models/company');
 const fs = require('fs');
 
-exports.createThing = (req, res, next) => {
+exports.createCompany = (req, res, next) => {
   req.body.company = JSON.parse(req.body.company);
   const url = req.protocol + '://' + req.get('host');
 
@@ -28,7 +28,7 @@ exports.createThing = (req, res, next) => {
   );
 };
 
-exports.getOneThing = (req, res, next) => {
+exports.getOneCompany = (req, res, next) => {
   Company.findOne({
     _id: req.params.id
   }).then(
@@ -44,7 +44,7 @@ exports.getOneThing = (req, res, next) => {
   );
 };
 
-exports.modifyThing = (req, res, next) => {
+exports.modifyCompany = (req, res, next) => {
   let company = new Company({ _id: req.params._id });
 
   if (req.file) {
@@ -83,7 +83,7 @@ exports.modifyThing = (req, res, next) => {
   );
 };
 
-exports.deleteThing = (req, res, next) => {
+exports.deleteCompany = (req, res, next) => {
   Company.findOne({_id: req.params.id}).then(
     (company) => {
       const filename = thing.imageUrl.split('/images/')[1];
@@ -106,7 +106,7 @@ exports.deleteThing = (req, res, next) => {
   );
 };
 
-exports.getAllStuff = (req, res, next) => {
+exports.getAllCompanies = (req, res, next) => {
   Company.find().then(
     (things) => {
       res.status(200).json(things);
